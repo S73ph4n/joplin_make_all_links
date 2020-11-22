@@ -1,10 +1,13 @@
-# Link to note
+# Make all possible links
 
-![](demo_gif.gif)
+This plugin searches the current note for mentions of other notes, then makes the corresponding links.
+Just click the new icon in the toolbar.
 
-This plugin adds an icon to the toolbar. When clicked, it creates a link to the note with a title matching the selected text (or, if such a note does not exist, creates it).
+### Before 
+![](screenshot_before.png) 
+### After clicking the icon
+![](screenshot_after.png) 
 
-Also adds a link back to the current note.
 
 ## Joplin Plugin
 

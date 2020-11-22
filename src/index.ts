@@ -4,50 +4,47 @@ import { ToolbarButtonLocation } from 'api/types';
 joplin.plugins.register({
 	onStart: async function() {
 		joplin.commands.register({
-			name: 'linkMaker',
-			label: 'Link to corresponding note. Creates it if needed.',
-			iconName: 'fas fa-external-link-alt',
+			name: 'makeAllLinks',
+			label: 'Link to all notes mentionned in the current note.',
+			iconName: 'fas fa-project-diagram',
 			execute: async () => {
 				const notes = (await joplin.data.get(['notes']));
 				const currentNote = await joplin.workspace.selectedNote();	
-				const selectedText = (await joplin.commands.execute('selectedText') as string);
-				
-				if (selectedText !== ""){
-					//console.info('Clic !', selectedText);
+				//const selectedText = (await joplin.commands.execute('selectedText') as string);
+				var body = currentNote.body.split('\n');
+				console.info(body);
 
-					//Check if note already exists
-					var idLinkedNote = 0;
-					for (let i in notes.items){
-						//console.info(notes.items[i].title);
-						if (notes.items[i].title.toLowerCase() === selectedText.toLowerCase()){
-							idLinkedNote = notes.items[i].id;	
-							console.info('Found note with title ', notes.items[i].title, selectedText ,idLinkedNote);
-							break;
+				for (var wordGpLength = 4; wordGpLength > 0; wordGpLength--){
+					for (var n_line=0; n_line < body.length; n_line++){
+						var line = body[n_line].split(' ');
+						for (var n_word=0; n_word < line.length-wordGpLength; n_word++){
+							var selectedText = line.slice(n_word, n_word+wordGpLength).join(' ');
+							if (selectedText.length > 2){
+								//console.info('Clic !', selectedText);
+
+								var idLinkedNote = 0;
+								for (let i in notes.items){
+									//console.info(notes.items[i].title);
+									if (notes.items[i].title.toLowerCase() === selectedText.toLowerCase() && currentNote.title.toLowerCase() !== selectedText.toLowerCase()){
+										idLinkedNote = notes.items[i].id;	
+										console.info('Found note with title ', notes.items[i].title, selectedText ,idLinkedNote);
+										const linkToNewNote = '[' + selectedText + '](:/' + idLinkedNote + ')';
+										const newLine = line.slice(0, n_word).concat([linkToNewNote], line.slice(n_word+wordGpLength)).join(' ');
+										
+										body = body.slice(0, n_line).concat([newLine], body.slice(n_line + 1));
+										console.info(body);
+										break;
+									}
+								}
+							}
 						}
 					}
-
-
-					//Else : make it:
-					if (idLinkedNote === 0){
-						const newNote = await joplin.data.post(['notes'], null, { body: "", title: selectedText});
-						idLinkedNote = newNote.id
-					}
-
-					//console.info(idLinkedNote);
-					
-					//Insert backlink :
-					const backlink = 'Linked from [' + currentNote.title + '](:/' + currentNote.id + ')';
-					const bodyLinkedNote = (await joplin.data.get(['notes', idLinkedNote.toString()], { fields: ['body'] })).body;
-					const newBodyLinkedNote = bodyLinkedNote + "\n" + backlink;
-					await joplin.data.put(['notes', idLinkedNote.toString()], null, { body: newBodyLinkedNote });
-
-					const linkToNewNote = '[' + selectedText + '](:/' + idLinkedNote + ')';
-
-					await joplin.commands.execute('replaceSelection', linkToNewNote);
 				}
+				// Change the corrected body :
+				await joplin.data.put(['notes', currentNote.id], null, { body: body.join('\n')});
 			},
 		});
 		
-		joplin.views.toolbarButtons.create('linkMaker', ToolbarButtonLocation.EditorToolbar);
+		joplin.views.toolbarButtons.create('makeAllLinks', ToolbarButtonLocation.EditorToolbar);
 	},
 });
