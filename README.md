@@ -3,6 +3,8 @@
 This plugin searches the current note for mentions of other notes, then makes the corresponding links.
 Just click the new icon in the toolbar.
 
+This plugin is experimental and comes with absolutely no warranty of any kind. Use at your own risk.
+
 ### Before 
 ![](screenshot_before.png) 
 ### After clicking the icon
