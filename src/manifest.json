@@ -1,9 +1,8 @@
 {
 	"manifest_version": 1,
-	"app_min_version": "1.4",
 	"name": "Make all links",
-	"description": "Goes through the current note and makes links to all the notes mentionned.",
-	"version": "0.1",
+	"description": "Makes all possible links in a note",
+	"version": "1.0.0",
 	"author": "S73ph4n",
-	"homepage_url": "https://github.com/S73ph4n"
+	"homepage_url": ""
 }
