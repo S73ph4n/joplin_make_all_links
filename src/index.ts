@@ -45,6 +45,6 @@ joplin.plugins.register({
 			},
 		});
 		
-		joplin.views.toolbarButtons.create('makeAllLinks', ToolbarButtonLocation.EditorToolbar);
+		joplin.views.toolbarButtons.create('makeAllLinks','makeAllLinks', ToolbarButtonLocation.EditorToolbar);
 	},
 });
