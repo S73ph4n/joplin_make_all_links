@@ -14,13 +14,13 @@ joplin.plugins.register({
 				var body = currentNote.body.split('\n');
 				console.info(body);
 
-				for (var wordGpLength = 4; wordGpLength > 0; wordGpLength--){
-					for (var n_line=0; n_line < body.length; n_line++){
+				for (var wordGpLength = 4; wordGpLength > 0; wordGpLength--){ //iterate over word group lengths (longer first)
+					for (var n_line=0; n_line < body.length; n_line++){ //over every line
 						var line = body[n_line].split(' ');
-						for (var n_word=0; n_word < line.length-wordGpLength; n_word++){
+						for (var n_word=0; n_word <= line.length-wordGpLength; n_word++){
 							var selectedText = line.slice(n_word, n_word+wordGpLength).join(' ');
 							if (selectedText.length > 2){
-								//console.info('Clic !', selectedText);
+								console.info('Clic !', wordGpLength, n_line, n_word, selectedText);
 
 								var idLinkedNote = 0;
 								for (let i in notes.items){
@@ -41,7 +41,9 @@ joplin.plugins.register({
 					}
 				}
 				// Change the corrected body :
-				await joplin.data.put(['notes', currentNote.id], null, { body: body.join('\n')});
+				//await joplin.data.put(['notes', currentNote.id], null, { body: body.join('\n')});
+				await joplin.commands.execute("textSelectAll");
+				await joplin.commands.execute("replaceSelection", body.join('\n'));
 			},
 		});
 		
