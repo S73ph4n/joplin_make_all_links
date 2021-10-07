@@ -20,7 +20,7 @@ joplin.plugins.register({
 						for (var n_word=0; n_word <= line.length-wordGpLength; n_word++){
 							var selectedText = line.slice(n_word, n_word+wordGpLength).join(' ');
 							if (selectedText.length > 2){
-								console.info('Clic !', wordGpLength, n_line, n_word, selectedText);
+								//console.info('Testing word group', wordGpLength, n_line, n_word, selectedText);
 
 								var idLinkedNote = 0;
 								for (let i in notes.items){
