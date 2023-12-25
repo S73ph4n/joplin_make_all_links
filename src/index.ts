@@ -5,7 +5,7 @@ joplin.plugins.register({
 	onStart: async function() {
 		joplin.commands.register({
 			name: 'makeAllLinks',
-			label: 'Link to all notes mentionned in the current note.',
+			label: 'Link to all notes mentioned in the current note.',
 			iconName: 'fas fa-project-diagram',
 			execute: async () => {
 				var response = (await joplin.data.get(['notes']));
